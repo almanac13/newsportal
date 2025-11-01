@@ -31,38 +31,38 @@ public class ConsoleMenu {
             int choice = getIntInput("Select an option: ");
             switch (choice) {
                 case 1:
-                    addSubscriber();           // ← Call add method
+                    addSubscriber();
                     break;
                 case 2:
-                    publishArticle();          // ← Call publish method
+                    publishArticle();
                     break;
                 case 3:
-                    changeSubscriberStrategy(); // ← Call change method
+                    changeSubscriberStrategy();
                     break;
                 case 4:
-                    listSubscribers();         // ← Call list method
+                    listSubscribers();
                     break;
                 case 5:
-                    removeSubscriber();        // ← Call remove method
+                    removeSubscriber();
                     break;
                 case 6:
-                    System.out.println("\n👋 Thank you for using News Portal!");
+                    System.out.println("\nThank you for using News Portal!");
                     running = false;
                     break;
                 default:
-                    System.out.println("❌ Invalid option! Please try again.");
+                    System.out.println("Invalid option! Please try again.");
             }
         }
     }
     private void displayMenu() {
         System.out.println("\n" + "-".repeat(60));
         System.out.println("MAIN MENU:");
-        System.out.println("1️⃣  Add New Subscriber");
-        System.out.println("2️⃣  Publish Article");
-        System.out.println("3️⃣  Change Subscriber Notification Method");
-        System.out.println("4️⃣  List All Subscribers");
-        System.out.println("5️⃣  Remove Subscriber");
-        System.out.println("6️⃣  Exit");
+        System.out.println("1.Add New Subscriber");
+        System.out.println("2.Publish Article");
+        System.out.println("3.Change Subscriber Notification Method");
+        System.out.println("4.List All Subscribers");
+        System.out.println("5.Remove Subscriber");
+        System.out.println("6.Exit");
         System.out.println("-".repeat(60));
     }
 
@@ -78,7 +78,7 @@ public class ConsoleMenu {
                 int value = Integer.parseInt(scanner.nextLine().trim());
                 return value;
             } catch (NumberFormatException e) {
-                System.out.println("❌ Please enter a valid number!");
+                System.out.println("Please enter a valid number!");
             }
         }
     }
@@ -108,7 +108,7 @@ public class ConsoleMenu {
                 strategyType = "push";
                 break;
             default:
-                System.out.println("❌ Invalid choice! Defaulting to Email.");
+                System.out.println("Invalid choice! Defaulting to Email.");
                 strategyType = "email";
         }
 
@@ -119,9 +119,9 @@ public class ConsoleMenu {
             );
             agency.registerObserver(subscriber);
             subscriberList.add(subscriber);
-            System.out.println("✅ Subscriber added successfully!");
+            System.out.println("Subscriber added successfully!");
         } catch (Exception e) {
-            System.out.println("❌ Error: " + e.getMessage());
+            System.out.println(" Error: " + e.getMessage());
         }
     }
 
@@ -162,26 +162,26 @@ public class ConsoleMenu {
                     .build();
 
             agency.publishArticle(article);
-            System.out.println("✅ Article published successfully!");
+            System.out.println("Article published successfully!");
         } catch (Exception e) {
-            System.out.println("❌ Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
     private void changeSubscriberStrategy() {
         if (subscriberList.isEmpty()) {
-            System.out.println("⚠️  No subscribers available!");
+            System.out.println("⚠ No subscribers available!");
             return;
         }
 
-        System.out.println("\n🔄 CHANGE NOTIFICATION METHOD");
+        System.out.println("\nCHANGE NOTIFICATION METHOD");
         System.out.println("-".repeat(40));
         listSubscribers();
 
         int index = getIntInput("Select subscriber number: ") - 1;
 
         if (index < 0 || index >= subscriberList.size()) {
-            System.out.println("❌ Invalid subscriber number!");
+            System.out.println("Invalid subscriber number!");
             return;
         }
 
@@ -201,7 +201,7 @@ public class ConsoleMenu {
                 strategyType = "push";
                 break;
             default:
-                System.out.println("❌ Invalid choice!");
+                System.out.println("Invalid choice!");
                 return;
         }
 
@@ -209,14 +209,14 @@ public class ConsoleMenu {
             subscriberList.get(index).setNotificationStrategy(
                     NotificationStrategyFactory.createStrategy(strategyType)
             );
-            System.out.println("✅ Notification method updated!");
+            System.out.println("Notification method updated!");
         } catch (Exception e) {
-            System.out.println("❌ Error: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
     }
     private void listSubscribers() {
         if (subscriberList.isEmpty()) {
-            System.out.println("⚠️  No subscribers registered yet.");
+            System.out.println("No subscribers registered yet.");
             return;
         }
 
@@ -232,7 +232,7 @@ public class ConsoleMenu {
 
     private void removeSubscriber() {
         if (subscriberList.isEmpty()) {
-            System.out.println("⚠️  No subscribers to remove!");
+            System.out.println("No subscribers to remove!");
             return;
         }
 
@@ -243,13 +243,13 @@ public class ConsoleMenu {
         int index = getIntInput("Select subscriber number to remove: ") - 1;
 
         if (index < 0 || index >= subscriberList.size()) {
-            System.out.println("❌ Invalid subscriber number!");
+            System.out.println("Invalid subscriber number!");
             return;
         }
 
         Subscriber subscriber = subscriberList.remove(index);
         agency.unregisterObserver(subscriber);
-        System.out.println("✅ Subscriber removed successfully!");
+        System.out.println("Subscriber removed successfully!");
     }
 
 }

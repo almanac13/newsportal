@@ -44,7 +44,7 @@ public class ArticleBuilder {
             timestamp = LocalDateTime.now();
         }
 
-        System.out.println("🔨 Builder: Constructing article '" + title + "'");
+        System.out.println("Builder: Constructing article '" + title + "'");
         return new Article(title, content, category, priority);
     }
 

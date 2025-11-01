@@ -25,7 +25,7 @@ public class Subscriber implements Observer {
 
     public void setNotificationStrategy(NotificationStrategy notificationStrategy) {
         this.notificationStrategy = notificationStrategy;
-        System.out.println("✅ " + name + " changed notification method to " +
+        System.out.println(name + " changed notification method to " +
                 notificationStrategy.getClass().getSimpleName());
     }
 

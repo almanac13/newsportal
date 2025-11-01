@@ -12,13 +12,13 @@ public class NotificationStrategyFactory {
         }
         switch (type.toLowerCase().trim()) {
             case "email":
-                System.out.println("🏭 Factory: Creating EmailStrategy");
+                System.out.println("Factory: Creating EmailStrategy");
                 return new EmailStrategy();
             case "sms":
-                System.out.println("🏭 Factory: Creating SmsStrategy");
+                System.out.println("Factory: Creating SmsStrategy");
                 return new SmsStrategy();
             case "push":
-                System.out.println("🏭 Factory: Creating PushStrategy");
+                System.out.println("Factory: Creating PushStrategy");
                 return new PushStrategy();
             default:
                 throw new IllegalArgumentException(
