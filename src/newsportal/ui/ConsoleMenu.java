@@ -22,7 +22,7 @@ public class ConsoleMenu {
 
     public void start() {
         System.out.println("\n" + "=".repeat(60));
-        System.out.println("📰 WELCOME TO NEWS PORTAL MANAGEMENT SYSTEM");
+        System.out.println("WELCOME TO NEWS PORTAL MANAGEMENT SYSTEM");
         System.out.println("=".repeat(60));
 
         boolean running = true;
@@ -84,7 +84,7 @@ public class ConsoleMenu {
     }
 
     private void addSubscriber() {
-        System.out.println("\n➕ ADD NEW SUBSCRIBER");
+        System.out.println("\nADD NEW SUBSCRIBER");
         System.out.println("-".repeat(40));
 
         String name = getStringInput("Name: ");
@@ -94,6 +94,7 @@ public class ConsoleMenu {
 
         System.out.println("\nChoose notification method:");
         System.out.println("1. Email  2. SMS  3. Push");
+        System.out.println("4. Fax (Legacy)  5. Telegram (Legacy)  6. Pager (Legacy)");
         int strategyChoice = getIntInput("Choice: ");
 
         String strategyType;
@@ -107,6 +108,9 @@ public class ConsoleMenu {
             case 3:
                 strategyType = "push";
                 break;
+            case 4: strategyType = "fax"; break;
+            case 5: strategyType = "telegram"; break;
+            case 6: strategyType = "pager"; break;
             default:
                 System.out.println("Invalid choice! Defaulting to Email.");
                 strategyType = "email";
@@ -126,7 +130,7 @@ public class ConsoleMenu {
     }
 
     private void publishArticle() {
-        System.out.println("\n📝 PUBLISH NEW ARTICLE");
+        System.out.println("\nPUBLISH NEW ARTICLE");
         System.out.println("-".repeat(40));
 
         String title = getStringInput("Title: ");
@@ -149,7 +153,7 @@ public class ConsoleMenu {
                 priority = "LOW";
                 break;
             default:
-                System.out.println("⚠️  Invalid choice! Defaulting to MEDIUM.");
+                System.out.println("Invalid choice! Defaulting to MEDIUM.");
                 priority = "MEDIUM";
         }
 
@@ -170,7 +174,7 @@ public class ConsoleMenu {
 
     private void changeSubscriberStrategy() {
         if (subscriberList.isEmpty()) {
-            System.out.println("⚠ No subscribers available!");
+            System.out.println("No subscribers available!");
             return;
         }
 
@@ -187,6 +191,7 @@ public class ConsoleMenu {
 
         System.out.println("\nNew notification method:");
         System.out.println("1. Email  2. SMS  3. Push");
+        System.out.println("4. Fax (Legacy)  5. Telegram (Legacy)  6. Pager (Legacy)");
         int strategyChoice = getIntInput("Choice: ");
 
         String strategyType;
@@ -200,6 +205,9 @@ public class ConsoleMenu {
             case 3:
                 strategyType = "push";
                 break;
+            case 4: strategyType = "fax"; break;
+            case 5: strategyType = "telegram"; break;
+            case 6: strategyType = "pager"; break;
             default:
                 System.out.println("Invalid choice!");
                 return;
@@ -220,7 +228,7 @@ public class ConsoleMenu {
             return;
         }
 
-        System.out.println("\n👥 REGISTERED SUBSCRIBERS:");
+        System.out.println("\nREGISTERED SUBSCRIBERS:");
         System.out.println("-".repeat(40));
         for (int i = 0; i < subscriberList.size(); i++) {
             Subscriber sub = subscriberList.get(i);
@@ -236,7 +244,7 @@ public class ConsoleMenu {
             return;
         }
 
-        System.out.println("\n➖ REMOVE SUBSCRIBER");
+        System.out.println("\nREMOVE SUBSCRIBER");
         System.out.println("-".repeat(40));
         listSubscribers();
 
