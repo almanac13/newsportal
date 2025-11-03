@@ -1,6 +1,6 @@
 package newsportal.factory;
 
-import newsportal.adapter.LegacyNotificationAdapter;
+import newsportal.adapter.OldNotificationAdapter;
 import newsportal.strategy.EmailStrategy;
 import newsportal.strategy.NotificationStrategy;
 import newsportal.strategy.PushStrategy;
@@ -23,17 +23,14 @@ public class NotificationStrategyFactory {
                 return new PushStrategy();
             case "fax":
                 System.out.println("Factory: Creating Legacy Fax Adapter");
-                return new LegacyNotificationAdapter("fax");
-            case "telegram":
-                System.out.println("Factory: Creating Legacy Telegram Adapter");
-                return new LegacyNotificationAdapter("telegram");
+                return new OldNotificationAdapter("fax");
             case "pager":
                 System.out.println("Factory: Creating Legacy Pager Adapter");
-                return new LegacyNotificationAdapter("pager");
+                return new OldNotificationAdapter("pager");
             default:
                 throw new IllegalArgumentException(
                         "Unknown strategy type: " + type +
-                                ". Valid types: email, sms, push, fax, telegram, pager"
+                                ". Valid types: email, sms, push, fax, pager"
                 );
         }
     }

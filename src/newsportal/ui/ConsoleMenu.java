@@ -21,8 +21,7 @@ public class ConsoleMenu {
     }
 
     public void start() {
-        System.out.println("WELCOME TO NEWS PORTAL MANAGEMENT SYSTEM");
-        System.out.println("=".repeat(60));
+        System.out.println("News Portal System");
 
         boolean running = true;
         while (running) {
@@ -45,7 +44,7 @@ public class ConsoleMenu {
                     removeSubscriber();
                     break;
                 case 6:
-                    System.out.println("\nThank you for using News Portal!");
+                    System.out.println("Thank you for using News Portal!");
                     running = false;
                     break;
                 default:
@@ -54,7 +53,7 @@ public class ConsoleMenu {
         }
     }
     private void displayMenu() {
-        System.out.println("MAIN MENU:");
+        System.out.println("MENU:");
         System.out.println("1.Add New Subscriber");
         System.out.println("2.Publish Article");
         System.out.println("3.Change Subscriber Notification Method");
@@ -91,7 +90,7 @@ public class ConsoleMenu {
 
         System.out.println("Choose notification method:");
         System.out.println("1. Email  2. SMS  3. Push");
-        System.out.println("4. Fax (Legacy)  5. Telegram (Legacy)  6. Pager (Legacy)");
+        System.out.println("4. Fax (Old)  5.Pager (Old)");
         int strategyChoice = getIntInput("Choice: ");
 
         String strategyType;
@@ -109,9 +108,6 @@ public class ConsoleMenu {
                 strategyType = "fax";
                 break;
             case 5:
-                strategyType = "telegram";
-                break;
-            case 6:
                 strategyType = "pager";
                 break;
             default:
@@ -182,7 +178,7 @@ public class ConsoleMenu {
             return;
         }
 
-        System.out.println("\nCHANGE NOTIFICATION METHOD");
+        System.out.println("CHANGE NOTIFICATION METHOD");
         System.out.println("-".repeat(40));
         listSubscribers();
 
@@ -193,9 +189,9 @@ public class ConsoleMenu {
             return;
         }
 
-        System.out.println("\nNew notification method:");
+        System.out.println("New notification method:");
         System.out.println("1. Email  2. SMS  3. Push");
-        System.out.println("4. Fax (Legacy)  5. Telegram (Legacy)  6. Pager (Legacy)");
+        System.out.println("4. Fax (Old)  5.Pager (Old)");
         int strategyChoice = getIntInput("Choice: ");
 
         String strategyType;
@@ -213,9 +209,6 @@ public class ConsoleMenu {
                 strategyType = "fax";
                 break;
             case 5:
-                strategyType = "telegram";
-                break;
-            case 6:
                 strategyType = "pager";
                 break;
             default:
@@ -245,8 +238,6 @@ public class ConsoleMenu {
                     (i + 1) + ". " + sub.getName() + " <" + sub.getEmail() + "> - " + sub.getNotificationStrategy().getClass().getSimpleName()
             );
         }
-
-
     }
 
     private void removeSubscriber() {
@@ -256,7 +247,6 @@ public class ConsoleMenu {
         }
 
         System.out.println("REMOVE SUBSCRIBER");
-        System.out.println("-".repeat(40));
         listSubscribers();
 
         int index = getIntInput("Select subscriber number to remove: ") - 1;

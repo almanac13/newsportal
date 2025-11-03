@@ -57,7 +57,6 @@ public class NewsAgency implements Subject {
     }
 
     private void loadPreExistingArticles() {
-        System.out.println("📰 Loading existing articles...");
 
         Article article1 = new ArticleBuilder()
                 .setTitle("Stock Markets Reach All-Time High")
