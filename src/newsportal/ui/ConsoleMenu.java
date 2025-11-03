@@ -241,9 +241,11 @@ public class ConsoleMenu {
         System.out.println("REGISTERED SUBSCRIBERS:");
         for (int i = 0; i < subscriberList.size(); i++) {
             Subscriber sub = subscriberList.get(i);
-            System.out.println(String.format("%d. %s <%s>",
-                    i + 1, sub.getName(), sub.getEmail()));
+            System.out.println(
+                    (i + 1) + ". " + sub.getName() + " <" + sub.getEmail() + "> - " + sub.getNotificationStrategy().getClass().getSimpleName()
+            );
         }
+
 
     }
 
