@@ -11,7 +11,7 @@ public class LegacyNotificationAdapter implements NotificationStrategy {
     public LegacyNotificationAdapter(String channel) {
         this.legacySystem = new LegacyNotificationSystem();
         this.channel = channel;
-        System.out.println("🔌 Adapter: Connected to legacy " + channel + " system");
+        System.out.println(" Adapter: Connected to legacy " + channel + " system");
     }
     @Override
     public void send(Article article, Subscriber subscriber) {

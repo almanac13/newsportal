@@ -22,18 +22,18 @@ public class NotificationStrategyFactory {
                 System.out.println("Factory: Creating PushStrategy");
                 return new PushStrategy();
             case "fax":
-                System.out.println("🏭 Factory: Creating Legacy Fax Adapter");
+                System.out.println("Factory: Creating Legacy Fax Adapter");
                 return new LegacyNotificationAdapter("fax");
             case "telegram":
-                System.out.println("🏭 Factory: Creating Legacy Telegram Adapter");
+                System.out.println("Factory: Creating Legacy Telegram Adapter");
                 return new LegacyNotificationAdapter("telegram");
             case "pager":
-                System.out.println("🏭 Factory: Creating Legacy Pager Adapter");
+                System.out.println("Factory: Creating Legacy Pager Adapter");
                 return new LegacyNotificationAdapter("pager");
             default:
                 throw new IllegalArgumentException(
                         "Unknown strategy type: " + type +
-                                ". Valid types: email, sms, push"
+                                ". Valid types: email, sms, push, fax, telegram, pager"
                 );
         }
     }

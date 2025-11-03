@@ -21,7 +21,6 @@ public class ConsoleMenu {
     }
 
     public void start() {
-        System.out.println("\n" + "=".repeat(60));
         System.out.println("WELCOME TO NEWS PORTAL MANAGEMENT SYSTEM");
         System.out.println("=".repeat(60));
 
@@ -55,7 +54,6 @@ public class ConsoleMenu {
         }
     }
     private void displayMenu() {
-        System.out.println("\n" + "-".repeat(60));
         System.out.println("MAIN MENU:");
         System.out.println("1.Add New Subscriber");
         System.out.println("2.Publish Article");
@@ -84,15 +82,14 @@ public class ConsoleMenu {
     }
 
     private void addSubscriber() {
-        System.out.println("\nADD NEW SUBSCRIBER");
-        System.out.println("-".repeat(40));
+        System.out.println("ADD NEW SUBSCRIBER");
 
         String name = getStringInput("Name: ");
         String email = getStringInput("Email: ");
         String phone = getStringInput("Phone: ");
         String deviceId = getStringInput("Device ID: ");
 
-        System.out.println("\nChoose notification method:");
+        System.out.println("Choose notification method:");
         System.out.println("1. Email  2. SMS  3. Push");
         System.out.println("4. Fax (Legacy)  5. Telegram (Legacy)  6. Pager (Legacy)");
         int strategyChoice = getIntInput("Choice: ");
@@ -108,9 +105,15 @@ public class ConsoleMenu {
             case 3:
                 strategyType = "push";
                 break;
-            case 4: strategyType = "fax"; break;
-            case 5: strategyType = "telegram"; break;
-            case 6: strategyType = "pager"; break;
+            case 4:
+                strategyType = "fax";
+                break;
+            case 5:
+                strategyType = "telegram";
+                break;
+            case 6:
+                strategyType = "pager";
+                break;
             default:
                 System.out.println("Invalid choice! Defaulting to Email.");
                 strategyType = "email";
@@ -165,8 +168,9 @@ public class ConsoleMenu {
                     .setPriority(priority)
                     .build();
 
-            agency.publishArticle(article);
             System.out.println("Article published successfully!");
+            agency.publishArticle(article);
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -205,9 +209,15 @@ public class ConsoleMenu {
             case 3:
                 strategyType = "push";
                 break;
-            case 4: strategyType = "fax"; break;
-            case 5: strategyType = "telegram"; break;
-            case 6: strategyType = "pager"; break;
+            case 4:
+                strategyType = "fax";
+                break;
+            case 5:
+                strategyType = "telegram";
+                break;
+            case 6:
+                strategyType = "pager";
+                break;
             default:
                 System.out.println("Invalid choice!");
                 return;
@@ -228,14 +238,13 @@ public class ConsoleMenu {
             return;
         }
 
-        System.out.println("\nREGISTERED SUBSCRIBERS:");
-        System.out.println("-".repeat(40));
+        System.out.println("REGISTERED SUBSCRIBERS:");
         for (int i = 0; i < subscriberList.size(); i++) {
             Subscriber sub = subscriberList.get(i);
             System.out.println(String.format("%d. %s <%s>",
                     i + 1, sub.getName(), sub.getEmail()));
         }
-        System.out.println("-".repeat(40));
+
     }
 
     private void removeSubscriber() {
@@ -244,7 +253,7 @@ public class ConsoleMenu {
             return;
         }
 
-        System.out.println("\nREMOVE SUBSCRIBER");
+        System.out.println("REMOVE SUBSCRIBER");
         System.out.println("-".repeat(40));
         listSubscribers();
 

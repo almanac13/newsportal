@@ -1,19 +1,24 @@
 package newsportal.agency;
 
 import newsportal.model.Article;
+import newsportal.model.ArticleBuilder;
 import newsportal.observer.Observer;
 import newsportal.observer.Subject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewsAgency implements Subject {
     private ArrayList<Observer> subscribers;
     private Article article;
+    private List<Article> articleHistory;
 
     private static NewsAgency instance;
 
     private NewsAgency() {
         this.subscribers = new ArrayList<>();
+        this.articleHistory = new ArrayList<>();
+        loadPreExistingArticles();
     }
 
     public static synchronized NewsAgency getInstance() {
@@ -47,6 +52,52 @@ public class NewsAgency implements Subject {
 
     public void publishArticle(Article article) {
         this.article = article;
+        articleHistory.add(article);
         notifyObservers();
     }
+
+    private void loadPreExistingArticles() {
+        System.out.println("📰 Loading existing articles...");
+
+        Article article1 = new ArticleBuilder()
+                .setTitle("Stock Markets Reach All-Time High")
+                .setContent("Major indices closed at record levels today...")
+                .setCategory("FINANCE")
+                .setPriority("HIGH")
+                .build();
+        articleHistory.add(article1);
+
+        Article article2 = new ArticleBuilder()
+                .setTitle("New Smartphone Released with AI Features")
+                .setContent("Tech giant unveils latest device...")
+                .setCategory("TECHNOLOGY")
+                .setPriority("MEDIUM")
+                .build();
+        articleHistory.add(article2);
+
+        Article article3 = new ArticleBuilder()
+                .setTitle("Local Team Wins Championship")
+                .setContent("After thrilling final match...")
+                .setCategory("SPORTS")
+                .setPriority("MEDIUM")
+                .build();
+        articleHistory.add(article3);
+
+        Article article4 = new ArticleBuilder()
+                .setTitle("New Healthcare Policy Announced")
+                .setContent("Government reveals major reforms...")
+                .setCategory("POLITICS")
+                .setPriority("HIGH")
+                .build();
+        articleHistory.add(article4);
+
+        Article article5 = new ArticleBuilder()
+                .setTitle("Storm Warning Issued for Weekend")
+                .setContent("Meteorologists predict heavy rainfall...")
+                .setCategory("WEATHER")
+                .setPriority("HIGH")
+                .build();
+        articleHistory.add(article5);
+    }
+
 }
