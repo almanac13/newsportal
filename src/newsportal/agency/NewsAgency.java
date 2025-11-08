@@ -2,66 +2,42 @@ package newsportal.agency;
 
 import newsportal.model.Article;
 import newsportal.model.ArticleBuilder;
+import newsportal.model.Category;
 import newsportal.observer.Observer;
 import newsportal.observer.Subject;
+import newsportal.visitor.ArticleVisitor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NewsAgency implements Subject {
-    private ArrayList<Observer> subscribers;
-    private Article article;
-    private List<Article> articleHistory;
-
     private static NewsAgency instance;
+    private List<Observer> subscribers;
+    private Article latestArticle;
+    private List<Article> articleHistory;  // NEW: Store all published articles
 
     private NewsAgency() {
         this.subscribers = new ArrayList<>();
         this.articleHistory = new ArrayList<>();
-        loadPreExistingArticles();
+        loadPreExistingArticles();  // NEW: Load initial articles
     }
 
     public static synchronized NewsAgency getInstance() {
         if (instance == null) {
             instance = new NewsAgency();
+            System.out.println("NewsAgency instance created (Singleton)");
         }
         return instance;
     }
 
-
-    @Override
-    public void registerObserver(Observer observer) {
-        subscribers.add(observer);
-        System.out.println("Subscriber registered: " + observer);
-
-    }
-
-    @Override
-    public void unregisterObserver(Observer observer) {
-        subscribers.remove(observer);
-        System.out.println("Subscriber unregistered: " + observer);
-
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Observer observer : subscribers) {
-            observer.update(article);
-        }
-    }
-
-    public void publishArticle(Article article) {
-        this.article = article;
-        articleHistory.add(article);
-        notifyObservers();
-    }
-
+    // NEW: Pre-load some articles
     private void loadPreExistingArticles() {
+        System.out.println("Loading existing articles...");
 
         Article article1 = new ArticleBuilder()
                 .setTitle("Stock Markets Reach All-Time High")
                 .setContent("Major indices closed at record levels today...")
-                .setCategory("FINANCE")
+                .setCategory(Category.FINANCE)
                 .setPriority("HIGH")
                 .build();
         articleHistory.add(article1);
@@ -69,7 +45,7 @@ public class NewsAgency implements Subject {
         Article article2 = new ArticleBuilder()
                 .setTitle("New Smartphone Released with AI Features")
                 .setContent("Tech giant unveils latest device...")
-                .setCategory("TECHNOLOGY")
+                .setCategory(Category.TECHNOLOGY)
                 .setPriority("MEDIUM")
                 .build();
         articleHistory.add(article2);
@@ -77,7 +53,7 @@ public class NewsAgency implements Subject {
         Article article3 = new ArticleBuilder()
                 .setTitle("Local Team Wins Championship")
                 .setContent("After thrilling final match...")
-                .setCategory("SPORTS")
+                .setCategory(Category.SPORTS)
                 .setPriority("MEDIUM")
                 .build();
         articleHistory.add(article3);
@@ -85,7 +61,7 @@ public class NewsAgency implements Subject {
         Article article4 = new ArticleBuilder()
                 .setTitle("New Healthcare Policy Announced")
                 .setContent("Government reveals major reforms...")
-                .setCategory("POLITICS")
+                .setCategory(Category.POLITICS)
                 .setPriority("HIGH")
                 .build();
         articleHistory.add(article4);
@@ -93,10 +69,81 @@ public class NewsAgency implements Subject {
         Article article5 = new ArticleBuilder()
                 .setTitle("Storm Warning Issued for Weekend")
                 .setContent("Meteorologists predict heavy rainfall...")
-                .setCategory("WEATHER")
+                .setCategory(Category.WEATHER)
                 .setPriority("HIGH")
                 .build();
         articleHistory.add(article5);
+
+        System.out.println("Loaded " + articleHistory.size() + " existing articles");
+    }
+
+    @Override
+    public void registerObserver(Observer observer) {
+        if (!subscribers.contains(observer)) {
+            subscribers.add(observer);
+            System.out.println("Subscriber added. Total: " + subscribers.size());
+        } else {
+            System.out.println("Subscriber already exists!");
+        }
+    }
+
+    @Override
+    public void unregisterObserver(Observer observer) {
+        if (subscribers.remove(observer)) {
+            System.out.println("Subscriber removed. Total: " + subscribers.size());
+        } else {
+            System.out.println(" Subscriber not found!");
+        }
+    }
+
+    @Override
+    public void notifyObservers() {
+        if (subscribers.isEmpty()) {
+            System.out.println("No subscribers to notify!");
+            return;
+        }
+        System.out.println("Broadcasting to " + subscribers.size() + " subscribers:");
+        System.out.println("───────────────────────────────────────");
+        for (Observer observer : subscribers) {
+            observer.update(latestArticle);
+        }
+        System.out.println("───────────────────────────────────────\n");
+    }
+
+    public void publishArticle(Article article) {
+        System.out.println("Publishing: " + article);
+        this.latestArticle = article;
+        articleHistory.add(article);  // Add to history
+        notifyObservers();
+    }
+
+    // NEW: Get all articles
+    public List<Article> getAllArticles() {
+        return new ArrayList<>(articleHistory);
+    }
+
+    // NEW: Get articles by category
+    public List<Article> getArticlesByCategory(Category category) {
+        List<Article> filtered = new ArrayList<>();
+        for (Article article : articleHistory) {
+            if (article.getCategory() == category) {
+                filtered.add(article);
+            }
+        }
+        return filtered;
+    }
+
+    public List<Observer> getSubscribers() {
+        return new ArrayList<>(subscribers);
+    }
+
+    // Visitor Pattern support
+    public void processWithVisitor(ArticleVisitor visitor) {
+        System.out.println("Processing " + articleHistory.size() + " articles.");
+        for (Article article : articleHistory) {
+            article.accept(visitor);
+        }
+        System.out.println("Processing complete!");
     }
 
 }

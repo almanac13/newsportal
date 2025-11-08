@@ -1,15 +1,17 @@
 package newsportal.model;
 
+import newsportal.visitor.ArticleVisitor;
+
 import java.time.LocalDateTime;
 
 public class Article {
     private String title;
     private String content;
-    private String category;
+    private Category category;  // Changed from String to Category
     private String priority;
     private LocalDateTime timestamp;
 
-    Article(String title, String content, String category, String priority) {
+    Article(String title, String content, Category category, String priority) {
         this.title = title;
         this.content = content;
         this.category = category;
@@ -25,7 +27,7 @@ public class Article {
         return content;
     }
 
-    public String getCategory() {
+    public Category getCategory() {  // Changed return type
         return category;
     }
 
@@ -40,6 +42,12 @@ public class Article {
     @Override
     public String toString() {
         return String.format("[%s] %s (%s) - %s",
-                priority, title, category, timestamp.toLocalTime());
+                priority, title, category.getDisplayName(), timestamp.toLocalTime());
     }
+
+    // Visitor Pattern
+    public void accept(ArticleVisitor visitor) {
+        visitor.visit(this);
+    }
+
 }

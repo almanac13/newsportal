@@ -4,9 +4,15 @@ import newsportal.agency.NewsAgency;
 import newsportal.factory.NotificationStrategyFactory;
 import newsportal.model.Article;
 import newsportal.model.ArticleBuilder;
+import newsportal.model.Category;
 import newsportal.model.Subscriber;
+import newsportal.visitor.CounterVisitor;
+import newsportal.visitor.DetailedPrinterVisitor;
+import newsportal.visitor.SimplePrinterVisitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleMenu {
@@ -21,13 +27,14 @@ public class ConsoleMenu {
     }
 
     public void start() {
-        System.out.println("News Portal System");
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println("WELCOME TO NEWS PORTAL MANAGEMENT SYSTEM");
+        System.out.println("=".repeat(60));
 
         boolean running = true;
         while (running) {
             displayMenu();
-            int choice = getIntInput("Select an option: ");
-            switch (choice) {
+            int choice = getIntInput("Select an option: ");switch (choice) {
                 case 1:
                     addSubscriber();
                     break;
@@ -38,41 +45,59 @@ public class ConsoleMenu {
                     changeSubscriberStrategy();
                     break;
                 case 4:
-                    listSubscribers();
+                    manageSubscriberCategories();
                     break;
                 case 5:
-                    removeSubscriber();
+                    listSubscribers();
                     break;
                 case 6:
+                    viewAllArticles();
+                    break;
+                case 7:
+                    viewArticlesWithStyle();  // NEW!
+                    break;
+                case 8:
+                    countArticles();  // NEW!
+                    break;
+                case 9:
+                    removeSubscriber();
+                    break;
+                case 0:
                     System.out.println("Thank you for using News Portal!");
                     running = false;
                     break;
                 default:
                     System.out.println("Invalid option! Please try again.");
-            }
-        }
+            }        }
+        scanner.close();
     }
+
     private void displayMenu() {
-        System.out.println("MENU:");
+        System.out.println("\n" + "-".repeat(60));
+        System.out.println("MAIN MENU:");
         System.out.println("1.Add New Subscriber");
         System.out.println("2.Publish Article");
         System.out.println("3.Change Subscriber Notification Method");
-        System.out.println("4.List All Subscribers");
-        System.out.println("5.Remove Subscriber");
-        System.out.println("6.Exit");
+        System.out.println("4.Manage Subscriber Categories");
+        System.out.println("5.List All Subscribers");
+        System.out.println("6.View All Articles");
+        System.out.println("7.View Articles (Different Styles)");  // NEW!
+        System.out.println("8.Count Articles");                     // NEW!
+        System.out.println("9.Remove Subscriber");
+        System.out.println("0.Exit");
         System.out.println("-".repeat(60));
     }
 
     private String getStringInput(String prompt) {
         System.out.print(prompt);
-        return scanner.nextLine().trim();
+        return scanner.nextLine();
     }
 
     private int getIntInput(String prompt) {
         while (true) {
             try {
                 System.out.print(prompt);
-                int value = Integer.parseInt(scanner.nextLine().trim());
+                int value = Integer.parseInt(scanner.nextLine());
                 return value;
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number!");
@@ -129,14 +154,22 @@ public class ConsoleMenu {
     }
 
     private void publishArticle() {
-        System.out.println("\nPUBLISH NEW ARTICLE");
+        System.out.println(" PUBLISH NEW ARTICLE");
         System.out.println("-".repeat(40));
 
         String title = getStringInput("Title: ");
         String content = getStringInput("Content: ");
-        String category = getStringInput("Category (e.g., Politics, Tech, Sports): ");
 
-        System.out.println("\nPriority:");
+        Category.printAll();
+        int categoryChoice = getIntInput("Select category: ");
+
+        if (categoryChoice < 1 || categoryChoice > Category.values().length) {
+            System.out.println("Invalid category!");
+            return;
+        }
+        Category category = Category.values()[categoryChoice - 1];
+
+        System.out.println("Priority:");
         System.out.println("1. HIGH  2. MEDIUM  3. LOW");
         int priorityChoice = getIntInput("Choice: ");
 
@@ -164,9 +197,8 @@ public class ConsoleMenu {
                     .setPriority(priority)
                     .build();
 
-            System.out.println("Article published successfully!");
             agency.publishArticle(article);
-
+            System.out.println("Article published successfully!");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -259,6 +291,190 @@ public class ConsoleMenu {
         Subscriber subscriber = subscriberList.remove(index);
         agency.unregisterObserver(subscriber);
         System.out.println("Subscriber removed successfully!");
+    }
+
+    private void manageSubscriberCategories() {
+        if (subscriberList.isEmpty()) {
+            System.out.println("No subscribers available!");
+            return;
+        }
+
+        System.out.println("MANAGE SUBSCRIBER CATEGORIES");
+        System.out.println("-".repeat(40));
+        listSubscribers();
+
+        int index = getIntInput("Select subscriber number: ") - 1;
+
+        if (index < 0 || index >= subscriberList.size()) {
+            System.out.println("Invalid subscriber number!");
+            return;
+        }
+
+        Subscriber subscriber = subscriberList.get(index);
+        System.out.println("Current categories: " + subscriber.categoriesToString());
+
+        System.out.println("1. Add category");
+        System.out.println("2. Remove category");
+        System.out.println("3. Set specific categories");
+        System.out.println("4. Subscribe to all categories");
+        int action = getIntInput("Choice: ");
+
+        switch (action) {
+            case 1:
+                addCategoryToSubscriber(subscriber);
+                break;
+            case 2:
+                removeCategoryFromSubscriber(subscriber);
+                break;
+            case 3:
+                setSubscriberCategories(subscriber);
+                break;
+            case 4:
+                subscriber.setCategories(Arrays.asList(Category.values()));
+                System.out.println("Subscribed to all categories!");
+                break;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+
+    private void addCategoryToSubscriber(Subscriber subscriber) {
+        Category.printAll();
+        int categoryChoice = getIntInput("Select category to add: ");
+
+        if (categoryChoice < 1 || categoryChoice > Category.values().length) {
+            System.out.println("Invalid category!");
+            return;
+        }
+
+        Category category = Category.values()[categoryChoice - 1];
+        subscriber.subscribeToCategory(category);
+    }
+
+    private void removeCategoryFromSubscriber(Subscriber subscriber) {
+        Category.printAll();
+        int categoryChoice = getIntInput("Select category to remove: ");
+
+        if (categoryChoice < 1 || categoryChoice > Category.values().length) {
+            System.out.println("Invalid category!");
+            return;
+        }
+
+        Category category = Category.values()[categoryChoice - 1];
+        subscriber.unsubscribeFromCategory(category);
+    }
+
+    private void setSubscriberCategories(Subscriber subscriber) {
+        Category.printAll();
+        System.out.println("Enter category numbers separated by commas (e.g., 1,3,5): ");
+        String input = getStringInput("");
+
+        try {
+            String[] parts = input.split(",");
+            List<Category> categories = new ArrayList<>();
+
+            for (String part : parts) {
+                int num = Integer.parseInt(part.trim());
+                if (num < 1 || num > Category.values().length) {
+                    System.out.println("Invalid category number: " + num);
+                    return;
+                }
+                categories.add(Category.values()[num - 1]);
+            }
+
+            subscriber.setCategories(categories);
+        } catch (NumberFormatException e) {
+            System.out.println(" Invalid input format!");
+        }
+    }
+
+    private void viewAllArticles() {
+        List<Article> articles = agency.getAllArticles();
+
+        if (articles.isEmpty()) {
+            System.out.println("No articles published yet.");
+            return;
+        }
+
+        System.out.println("ALL PUBLISHED ARTICLES (" + articles.size() + " total):");
+        System.out.println("=".repeat(60));
+
+        for (int i = 0; i < articles.size(); i++) {
+            Article article = articles.get(i);
+            System.out.println((i + 1) + ". " + article.toString());
+            System.out.println("   Content: " + article.getContent().substring(0,
+                    Math.min(50, article.getContent().length())) + "...");
+            System.out.println();
+        }
+        System.out.println("=".repeat(60));
+    }
+
+    private void viewArticlesWithStyle() {
+        List<Article> articles = agency.getAllArticles();
+
+        if (articles.isEmpty()) {
+            System.out.println("No articles available!");
+            return;
+        }
+
+        System.out.println("VIEW ARTICLES");
+        System.out.println("-".repeat(40));
+        System.out.println("1. Simple list");
+        System.out.println("2. Detailed view");
+
+        int choice = getIntInput("Choose style: ");
+
+        switch (choice) {
+            case 1:
+                SimplePrinterVisitor simplePrinter = new SimplePrinterVisitor();
+                agency.processWithVisitor(simplePrinter);
+                System.out.println("Total: " + simplePrinter.getCount() + " articles");
+                break;
+            case 2:
+                DetailedPrinterVisitor detailedPrinter = new DetailedPrinterVisitor();
+                agency.processWithVisitor(detailedPrinter);
+                break;
+            default:
+                System.out.println("Invalid choice!");
+        }
+    }
+
+    private void countArticles() {
+        List<Article> articles = agency.getAllArticles();
+
+        if (articles.isEmpty()) {
+            System.out.println("No articles to count!");
+            return;
+        }
+
+        System.out.println("COUNT ARTICLES");
+        System.out.println("-".repeat(40));
+        System.out.println("1. Count by priority");
+        System.out.println("2. Count specific category");
+
+        int choice = getIntInput("Choose: ");
+
+        switch (choice) {
+            case 1:
+                CounterVisitor counter = new CounterVisitor();
+                agency.processWithVisitor(counter);
+                counter.printResults();
+                break;
+            case 2:
+                Category.printAll();
+                int catChoice = getIntInput("Select category: ");
+                if (catChoice < 1 || catChoice > Category.values().length) {
+                    System.out.println("Invalid category!");
+                    return;
+                }
+                Category category = Category.values()[catChoice - 1];
+                CounterVisitor categoryCounter = new CounterVisitor(category);
+                agency.processWithVisitor(categoryCounter);
+                categoryCounter.printResults();
+                break;
+            default:
+                System.out.println("Invalid choice!");
+        }
     }
 
 }
