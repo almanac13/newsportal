@@ -27,7 +27,7 @@ public class Article {
         return content;
     }
 
-    public Category getCategory() {  // Changed return type
+    public Category getCategory() {
         return category;
     }
 

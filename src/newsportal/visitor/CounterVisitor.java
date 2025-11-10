@@ -30,10 +30,6 @@ public class CounterVisitor implements ArticleVisitor {
                 lowPriorityCount++;
                 break;
         }
-
-        if (targetCategory != null && article.getCategory() == targetCategory) {
-            categoryCount++;
-        }
     }
 
     public void printResults() {
@@ -43,11 +39,6 @@ public class CounterVisitor implements ArticleVisitor {
         System.out.println("LOW Priority:    " + lowPriorityCount);
         System.out.println("Total Articles:  " +
                 (highPriorityCount + mediumPriorityCount + lowPriorityCount));
-
-        if (targetCategory != null) {
-            System.out.println(targetCategory.getDisplayName() +
-                    " articles: " + categoryCount);
-        }
     }
 
     public int getTotalCount() {

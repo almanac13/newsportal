@@ -14,12 +14,12 @@ public class NewsAgency implements Subject {
     private static NewsAgency instance;
     private List<Observer> subscribers;
     private Article latestArticle;
-    private List<Article> articleHistory;  // NEW: Store all published articles
+    private List<Article> articleHistory;
 
     private NewsAgency() {
         this.subscribers = new ArrayList<>();
         this.articleHistory = new ArrayList<>();
-        loadPreExistingArticles();  // NEW: Load initial articles
+        loadPreExistingArticles();
     }
 
     public static synchronized NewsAgency getInstance() {
@@ -30,7 +30,6 @@ public class NewsAgency implements Subject {
         return instance;
     }
 
-    // NEW: Pre-load some articles
     private void loadPreExistingArticles() {
         System.out.println("Loading existing articles...");
 
@@ -103,11 +102,10 @@ public class NewsAgency implements Subject {
             return;
         }
         System.out.println("Broadcasting to " + subscribers.size() + " subscribers:");
-        System.out.println("───────────────────────────────────────");
+
         for (Observer observer : subscribers) {
             observer.update(latestArticle);
         }
-        System.out.println("───────────────────────────────────────\n");
     }
 
     public void publishArticle(Article article) {
@@ -122,7 +120,7 @@ public class NewsAgency implements Subject {
         return new ArrayList<>(articleHistory);
     }
 
-    // NEW: Get articles by category
+
     public List<Article> getArticlesByCategory(Category category) {
         List<Article> filtered = new ArrayList<>();
         for (Article article : articleHistory) {

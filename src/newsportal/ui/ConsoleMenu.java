@@ -81,7 +81,7 @@ public class ConsoleMenu {
         }
     }
 
-    // --- Features ---
+
     private void addSubscriber() {
         System.out.println("\n--- ADD SUBSCRIBER ---");
         String name = getString("Name: ");
@@ -134,6 +134,7 @@ public class ConsoleMenu {
         int p = getInt("Choice: ");
         String priority;
         if (p == 1) priority = "HIGH";
+        else if (p == 2) priority = "MEDIUM";
         else if (p == 3) priority = "LOW";
         else priority = "MEDIUM";
 
@@ -225,6 +226,7 @@ public class ConsoleMenu {
     }
 
     private void setCategories(Subscriber sub) {
+        Category.printAll();
         System.out.println("Enter categories (e.g. 1,3,5): ");
         String input = getString("");
         List<Category> newCats = new ArrayList<>();
