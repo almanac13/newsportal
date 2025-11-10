@@ -50,10 +50,6 @@ public class CounterVisitor implements ArticleVisitor {
         }
     }
 
-    public int getHighPriorityCount() {
-        return highPriorityCount;
-    }
-
     public int getTotalCount() {
         return highPriorityCount + mediumPriorityCount + lowPriorityCount;
     }

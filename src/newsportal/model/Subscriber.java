@@ -13,7 +13,7 @@ public class Subscriber implements Observer {
     private String phone;
     private String deviceId;
     private NotificationStrategy notificationStrategy;
-    private List<Category> subscribedCategories;  // NEW!
+    private List<Category> subscribedCategories;
 
     public Subscriber(String name, String email, String phone, String deviceId,
                       NotificationStrategy notificationStrategy) {
@@ -33,14 +33,14 @@ public class Subscriber implements Observer {
         if (subscribedCategories.contains(article.getCategory())) {
             notificationStrategy.send(article, this);
         } else {
-            System.out.println("⏭️  " + name + " skipped (not subscribed to " +
+            System.out.println(name + " skipped (not subscribed to " +
                     article.getCategory().getDisplayName() + ")");
         }
     }
 
     public void setNotificationStrategy(NotificationStrategy notificationStrategy) {
         this.notificationStrategy = notificationStrategy;
-        System.out.println("✅ " + name + " changed notification method to " +
+        System.out.println( name + " changed notification method to " +
                 notificationStrategy.getClass().getSimpleName());
     }
 
@@ -48,23 +48,23 @@ public class Subscriber implements Observer {
     public void subscribeToCategory(Category category) {
         if (!subscribedCategories.contains(category)) {
             subscribedCategories.add(category);
-            System.out.println("✅ " + name + " subscribed to " + category.getDisplayName());
+            System.out.println( name + " subscribed to " + category.getDisplayName());
         } else {
-            System.out.println("⚠️  " + name + " already subscribed to " + category.getDisplayName());
+            System.out.println( name + " already subscribed to " + category.getDisplayName());
         }
     }
 
     public void unsubscribeFromCategory(Category category) {
         if (subscribedCategories.remove(category)) {
-            System.out.println("✅ " + name + " unsubscribed from " + category.getDisplayName());
+            System.out.println(  name + " unsubscribed from " + category.getDisplayName());
         } else {
-            System.out.println("⚠️  " + name + " was not subscribed to " + category.getDisplayName());
+            System.out.println(  name + " was not subscribed to " + category.getDisplayName());
         }
     }
 
     public void setCategories(List<Category> categories) {
         this.subscribedCategories = new ArrayList<>(categories);
-        System.out.println("✅ " + name + " now follows: " + categoriesToString());
+        System.out.println( name + " now follows: " + categoriesToString());
     }
 
     public List<Category> getSubscribedCategories() {

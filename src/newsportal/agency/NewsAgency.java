@@ -117,7 +117,7 @@ public class NewsAgency implements Subject {
         notifyObservers();
     }
 
-    // NEW: Get all articles
+
     public List<Article> getAllArticles() {
         return new ArrayList<>(articleHistory);
     }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public class Article {
     private String title;
     private String content;
-    private Category category;  // Changed from String to Category
+    private Category category;
     private String priority;
     private LocalDateTime timestamp;
 

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 public class ArticleBuilder {
     private String title;
     private String content;
-    private Category category;  // Changed from String
+    private Category category;
     private String priority = "MEDIUM";
     private LocalDateTime timestamp;
 
